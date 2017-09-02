@@ -1,11 +1,11 @@
-Kaggle Docker Image
+Data Science Docker Image
 ================================
 Docker image with essential Python & R packages installed.
 
 ### Getting Started
 I assume you already have Docker installed, if you don't, please [download](https://docs.docker.com/engine/installation/) and install it.
-1. `docker build -t kaggle:latest .`
-2. `docker run -d -p 8787:8787 -e PASSWORD=yourpassword kaggle`
+1. `docker build -t data-science:latest .`
+2. `docker run -d -p 8787:8787 -e PASSWORD=yourpassword data-science`
 3. The RStudio server can be accessed via `http://{ip-address}:8787/`. Username/password : rstudio/yourpassword
 
 ### What's Installed
