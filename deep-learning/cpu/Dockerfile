@@ -11,6 +11,8 @@ RUN apt-get update \
     build-essential \
     g++ \
     wget \
+  && apt-get install -y supervisor \
+  && apt-get install -y xvfb \
   && wget --no-check-certificate -nv -O anaconda.sh https://repo.continuum.io/archive/$ANACONDA_VERSION \
   && /bin/bash anaconda.sh -b -p $ANACONDA_PATH \
   && pip install $TF_BINARY_URL \
@@ -24,3 +26,8 @@ RUN apt-get update \
   && rm -rf /var/lib/apt/lists/* \
   && apt-get autoclean \
   && apt-get autoremove
+
+RUN mkdir -p /projects/ \
+    && mkdir -p /var/log/supervisor
+COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+CMD ["/usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf"]
