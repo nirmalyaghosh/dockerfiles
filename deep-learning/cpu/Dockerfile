@@ -1,33 +1,30 @@
 FROM ubuntu:14.04
 
-ENV ANACONDA_PATH /opt/anaconda
-ENV ANACONDA_VERSION Anaconda3-4.2.0-Linux-x86_64.sh
-ENV PATH $ANACONDA_PATH/bin:$PATH
-ENV TF_BINARY_URL https://storage.googleapis.com/tensorflow/linux/cpu/tensorflow-1.3.0-cp35-cp35m-linux_x86_64.whl
+ENV MINICONDA_PATH /opt/miniconda
+ENV MINICONDA_VERSION Miniconda3-4.5.4-Linux-x86_64.sh
+ENV PATH $MINICONDA_PATH/bin:$PATH
 
 RUN apt-get update \
   && apt-get install -y --no-install-recommends \
     bzip2 \
     build-essential \
-    g++ \
     wget \
-  && apt-get install -y supervisor \
-  && apt-get install -y xvfb \
-  && wget --no-check-certificate -nv -O anaconda.sh https://repo.continuum.io/archive/$ANACONDA_VERSION \
-  && /bin/bash anaconda.sh -b -p $ANACONDA_PATH \
-  && pip install $TF_BINARY_URL \
-  && conda install -y \
-    h5py \
-    pandas \
-    "Theano==0.8.2" \
-  && conda install -c conda-forge keras=2.0.6 \
-  && rm $downloads/anaconda.sh \
-  && conda clean -ytps \
-  && rm -rf /var/lib/apt/lists/* \
-  && apt-get autoclean \
-  && apt-get autoremove
+  && rm -rf /var/lib/apt/lists/*
 
-RUN mkdir -p /projects/ \
-    && mkdir -p /var/log/supervisor
-COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
-CMD ["/usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf"]
+RUN wget --no-check-certificate -nv -O miniconda.sh https://repo.continuum.io/miniconda/$MINICONDA_VERSION \
+  && /bin/bash miniconda.sh -b -p $MINICONDA_PATH \
+  && rm $downloads/miniconda.sh
+
+RUN conda install -y \
+  h5py \
+  jupyter \
+  matplotlib \
+  pandas \
+  && conda install -c conda-forge tensorflow=1.8.0 \
+  && conda install -c conda-forge keras=2.2.0 \
+  && conda clean -ytps \
+  && mkdir -p /projects/
+
+EXPOSE 9000
+
+CMD jupyter notebook --no-browser --ip=0.0.0.0 --port 9000 --allow-root --notebook-dir=/projects --NotebookApp.token=  
