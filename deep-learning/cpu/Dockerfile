@@ -1,28 +1,39 @@
-FROM ubuntu:14.04
-
-ENV MINICONDA_PATH /opt/miniconda
-ENV MINICONDA_VERSION Miniconda3-4.5.4-Linux-x86_64.sh
-ENV PATH $MINICONDA_PATH/bin:$PATH
+FROM ubuntu:16.04
 
 RUN apt-get update \
   && apt-get install -y --no-install-recommends \
     bzip2 \
+    ca-certificates \
     build-essential \
+    sudo \
     wget \
-  && rm -rf /var/lib/apt/lists/*
+    openmpi-bin \
+    git
 
-RUN wget --no-check-certificate -nv -O miniconda.sh https://repo.continuum.io/miniconda/$MINICONDA_VERSION \
-  && /bin/bash miniconda.sh -b -p $MINICONDA_PATH \
-  && rm $downloads/miniconda.sh
+ENV LD_LIBRARY_PATH="/usr/lib/openmpi/lib"
 
-RUN conda install -y \
-  h5py \
-  jupyter \
+# Install Python 3.6, pip, wheel
+RUN apt-get update \
+  && apt-get install -y software-properties-common \
+  && add-apt-repository ppa:jonathonf/python-3.6 \
+  && apt-get update \
+  && apt-get install -y build-essential python3.6 python3.6-dev python3-pip python3.6-venv \
+  && python3.6 -m pip install pip --upgrade \
+  && python3.6 -m pip install wheel
+
+# Install required packages
+RUN python3.6 -m pip install \
+  numpy==1.14.5 \
+  scipy==1.1.0 \
+  pandas==0.23.1 \
+  cntk==2.5.1 \
+  keras==2.2.0 \
+  tensorflow==1.8.0 \
   matplotlib \
-  pandas \
-  && conda install -c conda-forge tensorflow=1.8.0 \
-  && conda install -c conda-forge keras=2.2.0 \
-  && conda clean -ytps \
+  jupyter
+
+RUN apt-get -y autoremove \
+  && rm -rf /var/lib/apt/lists/* \
   && mkdir -p /projects/
 
 EXPOSE 9000
