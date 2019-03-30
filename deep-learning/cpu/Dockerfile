@@ -36,6 +36,8 @@ RUN python3 -m pip install \
   cntk==2.5.1 \
   keras==2.2.0 \
   tensorflow==1.9.0 \
+  https://download.pytorch.org/whl/cpu/torch-1.0.1.post2-cp36-cp36m-linux_x86_64.whl \
+  torchvision \
   matplotlib \
   jupyter
 

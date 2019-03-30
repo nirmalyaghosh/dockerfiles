@@ -16,7 +16,8 @@ I assume you already have Docker installed, if you don't, please [download](http
 - Keras, [2.2.0](https://github.com/keras-team/keras/releases/tag/2.2.0)
 - TensorFlow, [1.9.0](https://github.com/tensorflow/tensorflow/releases/tag/v1.9.0)
 - CNTK, [2.5.1](https://docs.microsoft.com/en-us/cognitive-toolkit/)
-- Python, 3.6.5
+- Python, 3.6.7
+- PyTorch, [1.0.1](https://github.com/pytorch/pytorch/tree/v1.0.1)
 - numpy, 1.14.5
 - pandas, 0.23.1
 - scipy, 1.1.0
