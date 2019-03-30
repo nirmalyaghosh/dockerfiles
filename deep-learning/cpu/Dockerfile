@@ -23,8 +23,13 @@ RUN \
   && python3.6 -m pip install pip --upgrade \
   && python3.6 -m pip install wheel
 
+# At this stage we have 3.5 and 3.6.7. Need python3 point to the lattter
+RUN \
+  update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.5 1 && \
+  update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.6 2
+
 # Install required packages
-RUN python3.6 -m pip install \
+RUN python3 -m pip install \
   numpy==1.14.5 \
   scipy==1.1.0 \
   pandas==0.23.1 \
