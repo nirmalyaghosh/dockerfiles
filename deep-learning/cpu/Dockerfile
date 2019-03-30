@@ -1,20 +1,22 @@
 FROM ubuntu:16.04
 
-RUN apt-get update \
-  && apt-get install -y --no-install-recommends \
-    bzip2 \
-    ca-certificates \
-    build-essential \
-    sudo \
-    wget \
-    openmpi-bin \
-    git
+RUN \
+    apt-get update && \
+    apt-get install -y \
+        build-essential \
+        bzip2 \
+        ca-certificates \
+        sudo \
+        wget \
+        openmpi-bin \
+        git && \
+    apt-get clean
 
 ENV LD_LIBRARY_PATH="/usr/lib/openmpi/lib"
 
 # Install Python 3.6, pip, wheel
-RUN apt-get update \
-  && apt-get install -y software-properties-common \
+RUN \
+  apt-get install -y software-properties-common \
   && add-apt-repository ppa:jonathonf/python-3.6 \
   && apt-get update \
   && apt-get install -y build-essential python3.6 python3.6-dev python3-pip python3.6-venv \
@@ -28,7 +30,7 @@ RUN python3.6 -m pip install \
   pandas==0.23.1 \
   cntk==2.5.1 \
   keras==2.2.0 \
-  tensorflow==1.8.0 \
+  tensorflow==1.9.0 \
   matplotlib \
   jupyter
 
