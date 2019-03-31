@@ -32,6 +32,7 @@ RUN \
 RUN python3 -m pip install \
   numpy==1.14.5 \
   scipy==1.1.0 \
+  scikit-learn==0.20.3 \
   pandas==0.23.1 \
   cntk==2.5.1 \
   keras==2.2.0 \
